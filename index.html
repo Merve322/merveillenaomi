@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Merveille Naomi — Technical Writer</title>
 <meta name="description" content="API and SDK documentation that makes developers feel understood.">
+<link rel="canonical" href="https://merve322.github.io/merveillenaomi/">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <script>
@@ -412,7 +413,7 @@ footer p{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.04em;}
         <div class="section-eyebrow">Selected work</div>
         <div class="section-heading" id="work-heading"></div>
       </div>
-      <div class="section-desc">Each piece approaches the Paystack payment API from a different angle — an audit, an end-to-end guide, and a developer experience analysis. Together they demonstrate range, depth, and a writer who thinks like the developer reading the docs.</div>
+      <div class="section-desc" id="section-desc"></div>
     </div>
     <div class="pieces-list" id="pieces-list"></div>
   </div>
@@ -466,8 +467,24 @@ const headings = {
   1: 'One piece.<br>One standard.',
   2: 'Two pieces.<br>Two angles.',
   3: 'Three pieces.<br>One API.<br>Every angle.',
+  4: 'Four pieces.<br>Multiple APIs.<br>Every angle.',
+  5: 'Five pieces.<br>Range and depth.',
 };
-document.getElementById('work-heading').innerHTML = headings[count] || count + ' pieces.<br>Every angle.';
+document.getElementById('work-heading').innerHTML = headings[count] || count + ' pieces.<br>Range and depth.';
+
+// Work section description adapts dynamically from portfolio data
+const apis = [...new Set(PORTFOLIO.flatMap(p => p.tags))].filter(t =>
+  ['Paystack','Flutterwave','Mono','Kuda','Termii','Stripe','Twilio','OpenWeatherMap'].includes(t)
+);
+const types = [...new Set(PORTFOLIO.map(p => p.type))];
+const apiText = apis.length > 1
+  ? apis.slice(0,-1).join(', ') + ' and ' + apis[apis.length-1]
+  : apis[0] || 'multiple APIs';
+const typeText = types.length > 2
+  ? types.slice(0,-1).join(', ').toLowerCase() + ', and ' + types[types.length-1].toLowerCase()
+  : types.map(t => t.toLowerCase()).join(' and ');
+document.getElementById('section-desc').textContent =
+  `${count} piece${count > 1 ? 's' : ''} covering ${apiText} — including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
 
 // ── Marquee ────────────────────────────────────────────────
 const marqueeItems = ['API Documentation','SDK Guides','Developer Experience','Technical Writing','Paystack · Flutterwave · Mono','Documentation Audits','Integration Guides','African Fintech'];
