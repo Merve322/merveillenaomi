@@ -39,7 +39,7 @@ const PORTFOLIO = [
       <p>The code is introduced without explaining what the request represents or what the developer is trying to achieve. This quickly increases cognitive load.</p>
 
       <h3>3. Incomplete response explanation</h3>
-      <p>The documentation mentions the <code>access_code</code> parameter but doesn't explain how it's used, and doesn't mention the <code>authorization_url</code> — which is critical for completing the payment.</p>
+      <p>The documentation mentions the <code>access_code</code> parameter but doesn't explain how it's used, and doesn't mention the <code>authorization_url</code>, which is critical for completing the payment.</p>
 
       <h3>4. Incomplete flow</h3>
       <p>The developer doesn't see the full picture. What should have been said: "After this → redirect user → payment happens."</p>
@@ -71,8 +71,15 @@ const PORTFOLIO = [
       </div>
 
       <h2>The rewrite</h2>
-      <p>Before a customer can make a payment, you need to create a transaction. When you are initialising a transaction, you are telling Paystack: who is making the payment, how much they should be charged, and to prepare a payment session for them.</p>
-      <p>Follow these steps from your backend to keep your secret key secure.</p>
+      <p>Before a customer can make a payment, you need to create a transaction. When you are initialising a transaction, you are telling Paystack: </p>
+      
+      <ul>
+      <li>who is making the payment</li>
+      <li>how much they should be charged</li>
+      <li>and to prepare a payment session for them.</li>
+      </ul>
+      
+      <p>Follow these steps from your backend to keep your secret key secure:</p>
 
       <h3>Step 1: Send a request to Paystack</h3>
       <pre><code>curl -X POST https://api.paystack.co/transaction/initialize \\
@@ -97,11 +104,13 @@ const PORTFOLIO = [
 
       <div class="callout-box">
         <div class="callout-label">Security</div>
-        <p>Always initialise transactions from your backend. Never call Paystack's API directly from your frontend — this exposes your secret key. Your frontend should communicate with your server, which then makes the request to Paystack.</p>
+        <p>Always initialise transactions from your backend. Never call Paystack's API directly from your frontend, as this exposes your secret key. Your frontend should communicate with your server, which then makes the request to Paystack.</p>
       </div>
     `
   },
 
+
+   
   {
     id: "paystack-complete-flow",
     type: "End-to-end guide",
