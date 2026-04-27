@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding the Complete Payment Flow with Paystack API | Merveille Naomi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="index.html#about-anchor">About</a></li>
+    </ul>
+    <a href="mailto:your@email.com" class="nav-cta">Hire me</a>
+  </div>
+</nav>
+
+<div class="detail-wrapper">
+  <div class="detail-top">
+    <a href="index.html" class="back-btn">← Back to work</a>
+    <div class="detail-badge">End-to-end guide</div>
+    <div class="detail-title">Understanding the Complete Payment Flow with Paystack API</div>
+    <div class="detail-intro">This guide walks through the complete Paystack payment flow in sequence, from initialising a transaction to verifying payment, so developers can understand how each step connects.</div>
+    <div class="detail-meta-row">
+      <div class="meta-chip"><div class="meta-chip-dot"></div>Paystack</div>
+      <div class="meta-chip"><div class="meta-chip-dot"></div>Developer guide</div>
+      <div class="meta-chip"><div class="meta-chip-dot"></div>Integration flow</div>
+    </div>
+  </div>
+
+  <div class="doc-body">
+
+    <h2>Overview</h2>
+    <p>This guide walks through the complete Paystack payment flow in sequence, from initialising a transaction to verifying payment, so developers can understand how each step connects.</p>
+
+    <h2>Step 1: Initialise Transaction</h2>
+    <p>The payment flow begins when your server creates a transaction.</p>
+    <p>This step tells Paystack:</p>
+    <ul>
+      <li>Who is making the payment</li>
+      <li>How much they are to be charged</li>
+      <li>That a payment session should be prepared</li>
+    </ul>
+    <p>To do this, send a POST request from your backend:</p>
+    <pre><code>curl -X POST https://api.paystack.co/transaction/initialize
+-H "Authorization: Bearer YOUR_SECRET_KEY"
+-H "Content-Type: application/json"
+-d '{ "email": "testuser@email.com",
+      "amount": 500000
+    }'</code></pre>
+    <p>The request includes the customer's email and the amount to be charged.</p>
+    <p>When this request is sent, Paystack responds with:</p>
+    <pre><code>{
+  "status": true,
+  "message": "Authorization URL created",
+  "data": {
+    "authorization_url": "https://checkout.paystack.com/...",
+    "access_code": "...",
+    "reference": "..."
+  }
+}</code></pre>
+    <ul>
+      <li><code>authorization_url</code> → where the customer completes payment.</li>
+      <li><code>reference</code> → used to verify the transaction later.</li>
+      <li><code>access_code</code> → used internally by Paystack to load and manage the checkout flow.</li>
+    </ul>
+    <p>The <code>authorization_url</code> is the most important part of this response, as the customer uses it to complete the payment.</p>
+
+    <h2>Step 2: Redirect the Customer</h2>
+    <p>The customer is redirected to the <code>authorization_url</code>.</p>
+    <p>This is where the payment happens.</p>
+    <p>Paystack handles the payment interface and security, so you don't need to build this yourself.</p>
+
+    <h2>Step 3: Customer Completes Transaction</h2>
+    <p>Here, the customer enters their card details on Paystack's secure page.</p>
+    <p>Paystack processes the payment and may redirect the customer back to your frontend, depending on how your integration is configured.</p>
+
+    <h2>Step 4: Verify Transaction</h2>
+    <p>After payment, your server must verify the transaction.</p>
+    <p>You should never rely on the frontend for confirmation, as this can be manipulated.</p>
+    <p>Send a request using the transaction reference:</p>
+    <pre><code>curl https://api.paystack.co/transaction/verify/:reference</code></pre>
+    <p>Use the <code>reference</code> returned during initialisation from step 1 to confirm that the payment was successful before granting access or delivering value.</p>
+
+    <h2>Putting It All Together</h2>
+    <p>The flow begins when your server initialises a transaction and receives an authorisation URL.</p>
+    <p>The customer is redirected to this URL to complete payment.</p>
+    <p>After payment, your server verifies the transaction using the reference to confirm its status before taking any action.</p>
+
+    <div class="callout-box">
+      <div class="callout-label">Common Mistakes Developers Make</div>
+      <p>Verifying payment on the frontend · Not storing the transaction reference · Skipping the verification step · Exposing their secret key</p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <p>Technical Writer · API & SDK Documentation</p>
+  <p>Abuja, Nigeria · Available worldwide</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

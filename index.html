@@ -1,562 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merveille Naomi — Technical Writer</title>
-<meta name="description" content="API and SDK documentation that makes developers feel understood.">
-<link rel="canonical" href="https://merve322.github.io/merveillenaomi/">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<script>
-/* ============================================================
-   PORTFOLIO DATA
-   To add a new piece: copy one object inside the array,
-   paste it at the end (before the last ]), fill in content.
-   The site builds itself automatically. No other edits needed.
-   ============================================================ */
-
-const PORTFOLIO = [
-
-  {
-    id: "paystack-before-after",
-    type: "Documentation audit",
-    title: "Paystack API — Before → After Documentation Fix",
-    summary: "Five critical failures in Paystack's official Initialise documentation — identified, diagnosed, and rewritten for developer clarity.",
-    tags: ["Paystack", "REST API", "Audit & rewrite"],
-    intro: "Identifies five critical failures in Paystack's official Initialise endpoint documentation and rewrites each for developer clarity.",
-    content: `
-      <h2>Overview</h2>
-      <p>The Initialise section of the Paystack API documentation has several issues that make it harder for developers to understand and implement correctly. These problems are identified here, with a clearer fix rewritten, and an explanation for why the improved version is better.</p>
-
-      <h2>The problem</h2>
-      <h3>1. Weak mental model</h3>
-      <p>The documentation says:</p>
-      <blockquote><p>"Initialise the transaction from your backend"</p></blockquote>
-      <p>It doesn't clearly answer: what is initialising? What does it actually do in the payment flow? This leaves beginners without a clear understanding of the step.</p>
-
-      <h3>2. Code appears too fast</h3>
-      <p>The code is introduced without explaining what the request represents or what the developer is trying to achieve. This quickly increases cognitive load.</p>
-
-      <h3>3. Incomplete response explanation</h3>
-      <p>The documentation mentions the <code>access_code</code> parameter but doesn't explain how it's used, and doesn't mention the <code>authorization_url</code>, which is critical for completing the payment.</p>
-
-      <h3>4. Incomplete flow</h3>
-      <p>The developer doesn't see the full picture. What should have been said: "After this → redirect user → payment happens."</p>
-
-      <h3>5. Disconnected security warning</h3>
-      <p>The "Don't use your secret key…" section feels abrupt and is not integrated into the flow.</p>
-
-      <div class="compare-grid">
-        <div class="compare-col">
-          <div class="compare-label before">Before</div>
-          <ul>
-            <li>No mental model</li>
-            <li>Code appears immediately</li>
-            <li>Response fields unexplained</li>
-            <li>Flow ends abruptly</li>
-            <li>Security warning disconnected</li>
-          </ul>
-        </div>
-        <div class="compare-col">
-          <div class="compare-label after">After</div>
-          <ul>
-            <li>Clear context-setting intro</li>
-            <li>Explanation before code</li>
-            <li>All response fields defined</li>
-            <li>Full redirect flow shown</li>
-            <li>Security note woven in naturally</li>
-          </ul>
-        </div>
-      </div>
-
-      <h2>The rewrite</h2>
-      <p>Before a customer can make a payment, you need to create a transaction. When you are initialising a transaction, you are telling Paystack: </p>
-      
-      <ul>
-      <li>who is making the payment</li>
-      <li>how much they should be charged</li>
-      <li>and to prepare a payment session for them.</li>
-      </ul>
-      
-      <p>Follow these steps from your backend to keep your secret key secure:</p>
-
-      <h3>Step 1: Send a request to Paystack</h3>
-      <pre><code>curl -X POST https://api.paystack.co/transaction/initialize \\
-  -H "Authorization: Bearer YOUR_SECRET_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-        "email": "customer@email.com",
-        "amount": 500000
-      }'</code></pre>
-      <p>This request creates a new transaction for the specified customer and amount.</p>
-
-      <h3>Step 2: Handle the response</h3>
-      <p>Paystack returns a response containing important details. Inside the <code>data</code> object:</p>
-      <ul>
-        <li><code>authorization_url</code> — the link where the customer completes payment.</li>
-        <li><code>reference</code> — a unique ID for tracking the transaction.</li>
-        <li><code>access_code</code> — used internally to verify and manage the transaction.</li>
-      </ul>
-
-      <h3>Step 3: Redirect the customer</h3>
-      <p>Redirect the customer to the <code>authorization_url</code>. This takes them to Paystack's secure payment page to enter their payment details.</p>
-
-      <div class="callout-box">
-        <div class="callout-label">Security</div>
-        <p>Always initialise transactions from your backend. Never call Paystack's API directly from your frontend, as this exposes your secret key. Your frontend should communicate with your server, which then makes the request to Paystack.</p>
-      </div>
-    `
-  },
-
-
-   
-  {
-    id: "paystack-complete-flow",
-    type: "End-to-end guide",
-    title: "Understanding the Complete Payment Flow with Paystack API",
-    summary: "A sequential walkthrough of the full payment lifecycle — written so every step connects clearly to the next.",
-    tags: ["Paystack", "Developer guide", "Integration flow"],
-    intro: "A sequential walkthrough of the full Paystack payment lifecycle, written so every step connects clearly to the next.",
-    content: `
-      <h2>Overview</h2>
-      <p>This guide walks through the complete Paystack payment flow in sequence — from initialising a transaction to verifying payment — so developers understand how each step connects.</p>
-
-      <h2>Step 1: Initialise transaction</h2>
-      <p>The payment flow begins when your server creates a transaction. This step tells Paystack: who is making the payment, how much they are to be charged, and that a payment session should be prepared.</p>
-      <pre><code>curl -X POST https://api.paystack.co/transaction/initialize \\
-  -H "Authorization: Bearer YOUR_SECRET_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-        "email": "testuser@email.com",
-        "amount": 500000
-      }'</code></pre>
-      <p>Paystack responds with:</p>
-      <pre><code>{
-  "status": true,
-  "message": "Authorization URL created",
-  "data": {
-    "authorization_url": "https://checkout.paystack.com/...",
-    "access_code": "...",
-    "reference": "..."
-  }
-}</code></pre>
-      <ul>
-        <li><code>authorization_url</code> — where the customer completes payment.</li>
-        <li><code>reference</code> — used to verify the transaction later.</li>
-        <li><code>access_code</code> — used internally by Paystack to manage the checkout flow.</li>
-      </ul>
-      <p>The <code>authorization_url</code> is the most important part of this response.</p>
-
-      <h2>Step 2: Redirect the customer</h2>
-      <p>The customer is redirected to the <code>authorization_url</code>. Paystack handles the payment interface and security — you don't need to build this yourself.</p>
-
-      <h2>Step 3: Customer completes transaction</h2>
-      <p>The customer enters their card details on Paystack's secure page. Paystack processes the payment and may redirect the customer back to your frontend, depending on your integration configuration.</p>
-
-      <h2>Step 4: Verify transaction</h2>
-      <p>After payment, your server must verify the transaction. Never rely on the frontend for confirmation — it can be manipulated.</p>
-      <pre><code>curl https://api.paystack.co/transaction/verify/:reference</code></pre>
-      <p>Use the <code>reference</code> from step 1 to confirm the payment was successful before granting access or delivering value.</p>
-
-      <div class="callout-box">
-        <div class="callout-label">Common mistakes</div>
-        <p>Verifying payment on the frontend · Not storing the transaction reference · Skipping the verification step · Exposing your secret key in frontend code</p>
-      </div>
-    `
-  },
-
-  {
-    id: "paystack-where-stuck",
-    type: "Developer experience analysis",
-    title: "Where Developers Get Stuck in Paystack's Payment Flow",
-    summary: "A diagnosis of the exact moment developers misread the flow as complete — and concrete structural fixes to prevent it.",
-    tags: ["Paystack", "DX analysis", "Documentation critique"],
-    intro: "Diagnoses the exact moment developers misread the flow as complete — and proposes structural improvements to prevent it.",
-    content: `
-      <h2>Overview</h2>
-      <p>The goal of good documentation is to make integration clear and predictable. However, on Paystack's "Accept Payments" page, multiple payment flows are presented together without clear separation — making it difficult for developers to know what steps apply to their use case.</p>
-      <p>One critical point of confusion occurs after the payment step. This guide focuses on that confusion, explains why it happens, and proposes how it can be fixed.</p>
-
-      <h2>Where developers get stuck</h2>
-      <p>The documentation presents a high-level flow: initialise, complete, verify. But as the page progresses, redirects, callback URLs, and webhooks are introduced without being tied back to the main flow.</p>
-      <p>After a customer completes payment and is redirected, the flow appears finished. A developer may reasonably assume: <em>"The user has paid, so the transaction is complete."</em> This is where the confusion occurs.</p>
-
-      <h2>Why this happens</h2>
-      <ul>
-        <li>Verification is introduced but not strongly emphasised as mandatory.</li>
-        <li>The redirect step gives a false sense of completion.</li>
-        <li>The documentation does not clearly define backend responsibility.</li>
-      </ul>
-      <p>This leads to a dangerous assumption: that the frontend confirms success, or that the redirect confirms payment — when neither guarantees a transaction was successful.</p>
-
-      <h2>The correct mental model</h2>
-      <div class="callout-box">
-        <div class="callout-label">Key principle</div>
-        <p>A payment is not complete when the user finishes with the payment page. It is only complete when your backend verifies the transaction. The frontend can be manipulated. A redirect indicates a flow has ended — not that payment was successful. Your backend must be the source of truth.</p>
-      </div>
-
-      <h2>The correct way to handle it</h2>
-      <ol>
-        <li>Retrieve the reference from the callback URL</li>
-        <li>Send a verification request from your backend:</li>
-      </ol>
-      <pre><code>curl https://api.paystack.co/transaction/verify/:reference</code></pre>
-      <ol start="3">
-        <li>Confirm the transaction status is successful and the amount matches what was expected.</li>
-      </ol>
-      <p>Only after this verification should you grant access or deliver value.</p>
-
-      <h2>How the documentation could be improved</h2>
-      <ul>
-        <li>Add an explicit warning: "Payment is not complete until verified."</li>
-        <li>Place the verification step immediately after the redirect step.</li>
-        <li>Define backend verification as required — not optional.</li>
-        <li>Separate different payment flows (Popup, Redirect, SDKs) for clarity.</li>
-      </ul>
-
-      <h2>Key takeaway</h2>
-      <p>A successful payment flow is not complete after the user pays. It is complete only after your backend verifies the transaction. With clearer flow separation and an unambiguous verification requirement, the Paystack documentation could prevent this mistake entirely.</p>
-    `
-  }
-
-  /* ============================================================
-     FOR NEW PIECES, ADD BELOW THIS LINE.
-     Copy template below, paste it above this comment block,
-     add a comma after the previous closing brace }, then fill in.
-
-  ,{
-    id: "unique-slug-no-spaces",
-    type: "Type of piece e.g. SDK Guide",
-    title: "Your piece title here",
-    summary: "One sentence shown on the work list page.",
-    tags: ["Tag 1", "Tag 2", "Tag 3"],
-    intro: "One sentence shown at the top of the piece detail page.",
-    content: `
-      <h2>Your first section</h2>
-      <p>Your content here. Use the same HTML tags as the pieces above.</p>
-    `
-  }
-     ============================================================ */
-
-];
-
-/* ============================================================
-   PERSONAL DETAILS — can be updated as needed
-   ============================================================ */
-const ME = {
-  name: "Merveille Naomi",
-  email: "njikoumerveille@gmail.com",
-  tagline: "Docs that make developers feel understood.",
-  bio: "I'm a technical writer specialising in API and SDK documentation for developer-facing products. My work focuses on the gap between how an API works and how a developer actually understands it — reducing integration time and support overhead for engineering teams across Africa and beyond.",
-  availability: "Open to freelance projects — immediate start",
-  location: "Abuja, Nigeria · Available remotely worldwide",
-  speciality: "API documentation · SDK guides · Developer experience audits",
-  markets: "African fintech · Global API-first companies"
-};
-</script>
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --cream:#faf8f4;--cream2:#f3f0ea;--cream3:#e8e3d9;
-  --ink:#1a1714;--ink2:#4d4840;--ink3:#9a9086;
-  --gold:#b8935a;--gold2:#d4aa72;--gold-light:#f0e4cc;
-  --dark:#16140f;--dark2:#221e17;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:15px;overflow-x:hidden;}
-
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,248,244,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--cream3);}
-.logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:0.04em;color:var(--ink);display:flex;align-items:center;gap:8px;}
-.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block;}
-.nav-right{display:flex;align-items:center;gap:2.5rem}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{font-size:12px;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink2);text-decoration:none;transition:color 0.2s;}
-.nav-links a:hover{color:var(--gold)}
-.nav-cta{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--cream);background:var(--ink);padding:9px 20px;border:none;cursor:pointer;border-radius:1px;font-family:'Outfit',sans-serif;transition:background 0.2s;text-decoration:none;display:inline-block;line-height:2;}
-.nav-cta:hover{background:var(--gold)}
-
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 5rem;position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 80% 30%, rgba(184,147,90,0.07) 0%, transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%, rgba(184,147,90,0.05) 0%, transparent 60%);pointer-events:none;}
-.hero-lines{position:absolute;top:0;right:0;bottom:0;width:45%;border-left:1px solid var(--cream3);pointer-events:none;overflow:hidden;}
-.hero-lines::before{content:'';position:absolute;top:0;left:33%;bottom:0;border-left:1px solid var(--cream3);}
-.hero-tag-row{position:absolute;top:100px;right:3rem;display:flex;flex-direction:column;gap:12px;align-items:flex-end;}
-.hero-tag{font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);padding:5px 12px;border:1px solid var(--cream3);background:var(--cream);}
-.hero-number{position:absolute;bottom:5rem;right:3rem;font-family:'Cormorant Garamond',serif;font-size:10rem;font-weight:300;color:var(--cream3);line-height:1;pointer-events:none;user-select:none;transition:all 0.4s ease;}
-.hero-label{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;}
-.hero-label::before{content:'';display:block;width:30px;height:1px;background:var(--gold);}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:300;line-height:1.08;letter-spacing:-0.02em;color:var(--ink);max-width:700px;margin-bottom:2rem;}
-.hero h1 em{font-style:italic;color:var(--gold);}
-.hero-sub{font-size:15px;font-weight:300;color:var(--ink2);line-height:1.8;max-width:480px;margin-bottom:3rem;}
-.hero-actions{display:flex;gap:1rem;align-items:center}
-.btn-dark{font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:var(--ink);color:var(--cream);border:none;padding:14px 32px;cursor:pointer;border-radius:1px;transition:background 0.25s;}
-.btn-dark:hover{background:var(--gold)}
-.btn-outline{font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;background:none;color:var(--ink2);border:1px solid var(--cream3);padding:14px 32px;cursor:pointer;border-radius:1px;transition:all 0.25s;}
-.btn-outline:hover{border-color:var(--ink2);color:var(--ink)}
-.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;}
-.hero-scroll span{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3)}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom, var(--ink3), transparent);animation:scrollpulse 2s ease-in-out infinite}
-@keyframes scrollpulse{0%,100%{opacity:0.4}50%{opacity:1}}
-
-.marquee-bar{background:var(--ink);padding:14px 0;overflow:hidden;white-space:nowrap;}
-.marquee-inner{display:inline-flex;animation:marquee 30s linear infinite;}
-.marquee-item{font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);padding:0 2.5rem;border-right:1px solid rgba(255,255,255,0.1);}
-.marquee-item.gold{color:var(--gold2)}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-.work-section{padding:6rem 3rem;max-width:1100px;margin:0 auto}
-.section-intro{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:5rem;align-items:end;}
-.section-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
-.section-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--gold)}
-.section-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;letter-spacing:-0.02em;line-height:1.2;color:var(--ink);}
-.section-desc{font-size:14px;font-weight:300;color:var(--ink2);line-height:1.8;align-self:end;}
-
-.pieces-list{display:flex;flex-direction:column;}
-.piece-row{display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0;border-top:1px solid var(--cream3);cursor:pointer;position:relative;transition:padding-left 0.3s ease;}
-.piece-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);opacity:0.06;transition:width 0.3s ease;}
-.piece-row:hover::before{width:100%}
-.piece-row:hover{padding-left:1rem}
-.piece-row:last-child{border-bottom:1px solid var(--cream3);}
-.piece-num{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;color:var(--cream3);line-height:1;transition:color 0.3s;}
-.piece-row:hover .piece-num{color:var(--gold-light)}
-.piece-badge{display:inline-block;font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:3px 10px;border-radius:20px;margin-bottom:0.6rem;}
-.piece-title-main{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink);letter-spacing:-0.01em;line-height:1.25;margin-bottom:0.5rem;}
-.piece-desc-main{font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;max-width:520px;}
-.piece-tags-row{display:flex;gap:6px;margin-top:0.8rem;flex-wrap:wrap;}
-.ptag{font-size:10px;font-weight:400;letter-spacing:0.06em;color:var(--ink3);border:1px solid var(--cream3);padding:2px 9px;border-radius:20px;}
-.piece-cta{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);transition:color 0.2s;white-space:nowrap;}
-.piece-row:hover .piece-cta{color:var(--gold)}
-.cta-arrow{width:36px;height:36px;border:1px solid var(--cream3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.25s;}
-.piece-row:hover .cta-arrow{background:var(--gold);border-color:var(--gold);color:#fff;}
-
-/* DETAIL */
-.detail-page{display:none;padding-top:64px;}
-.detail-page.active{display:block;}
-.detail-top{padding:5rem 3rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--cream3);margin-bottom:0;}
-.back-btn{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;margin-bottom:3rem;padding:0;transition:color 0.2s;}
-.back-btn:hover{color:var(--gold)}
-.detail-badge{display:inline-block;font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:4px 12px;border-radius:20px;margin-bottom:1.2rem;}
-.detail-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);margin-bottom:1rem;}
-.detail-intro{font-size:15px;font-weight:300;color:var(--ink2);line-height:1.8;max-width:580px;}
-.detail-meta-row{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;}
-.meta-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink3);}
-.meta-chip-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;}
-.doc-body{max-width:660px;padding:3rem 3rem 5rem;margin:0 auto;}
-.doc-body h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--ink);margin:3rem 0 1rem;letter-spacing:-0.01em;line-height:1.3;}
-.doc-body h3{font-size:13px;font-weight:600;color:var(--ink);margin:2rem 0 0.6rem;letter-spacing:0.04em;text-transform:uppercase;}
-.doc-body p{font-size:14.5px;color:var(--ink2);line-height:1.85;margin-bottom:1rem;font-weight:300;}
-.doc-body ul,.doc-body ol{margin:0.8rem 0 1.2rem 1.2rem;font-size:14.5px;color:var(--ink2);line-height:1.85;font-weight:300;}
-.doc-body li{margin-bottom:0.3rem}
-.doc-body pre{background:var(--dark);border-radius:4px;padding:1.5rem;margin:1.2rem 0 1.8rem;overflow-x:auto;border-left:3px solid var(--gold);}
-.doc-body code{font-family:'Courier New',monospace;font-size:12.5px;color:#e8dcc8;line-height:1.75;}
-.doc-body p code,.doc-body li code{background:var(--cream2);color:var(--gold);padding:1px 6px;border-radius:3px;font-size:12.5px;}
-.doc-body blockquote{border-left:3px solid var(--gold);padding:0.8rem 1.4rem;margin:1.2rem 0;background:var(--cream2);border-radius:0 4px 4px 0;}
-.doc-body blockquote p{font-style:italic;margin:0;}
-.callout-box{background:var(--dark2);border-radius:4px;padding:1.4rem 1.6rem;margin:1.8rem 0;border-left:3px solid var(--gold);}
-.callout-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold2);margin-bottom:0.5rem;}
-.callout-box p{font-size:13.5px;color:rgba(255,255,255,0.7);margin:0;font-weight:300;line-height:1.7;}
-.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--cream3);border-radius:4px;overflow:hidden;margin:1.5rem 0;}
-.compare-col{background:var(--cream);padding:1.4rem;}
-.compare-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.8rem;}
-.compare-label.before{color:#c0392b}.compare-label.after{color:#27ae60}
-.compare-col ul{margin-left:1rem;font-size:13px;color:var(--ink2);font-weight:300;line-height:1.75;}
-
-.about-section{background:var(--ink);padding:6rem 3rem;position:relative;overflow:hidden;}
-.about-section::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle, rgba(184,147,90,0.08) 0%, transparent 70%);pointer-events:none;}
-.about-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
-.about-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:flex;align-items:center;gap:10px;}
-.about-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--gold);}
-.about-name{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:#fff;letter-spacing:-0.02em;line-height:1.1;margin-bottom:1.5rem;}
-.about-bio{font-size:14.5px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.85;margin-bottom:2rem;}
-.about-right{display:flex;flex-direction:column;gap:2rem;}
-.about-stat{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.5rem;}
-.stat-label{font-size:9px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;}
-.stat-value{font-size:14px;color:rgba(255,255,255,0.7);font-weight:300;}
-
-footer{background:var(--dark);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.05);}
-footer p{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.04em;}
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:6px;}
-
-.home-view.hidden{display:none;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merveille Naomi — Technical Writer</title>
+  <meta name="description" content="API and SDK documentation that makes developers feel understood.">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav>
-  <div class="logo"><div class="logo-dot"></div><span id="nav-name"></span></div>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="#" onclick="showHome();return false">Work</a></li>
+      <li><a href="index.html">Work</a></li>
       <li><a href="#about-anchor">About</a></li>
     </ul>
-    <a id="nav-hire" class="nav-cta">Hire me</a>
+    <!-- REPLACE with your real email -->
+    <a href="mailto:your@email.com" class="nav-cta">Hire me</a>
   </div>
 </nav>
 
-<div class="home-view" id="home-view">
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-lines"></div>
-    <div class="hero-tag-row">
-      <div class="hero-tag">API Documentation</div>
-      <div class="hero-tag">SDK Guides</div>
-      <div class="hero-tag">Developer Experience</div>
-    </div>
-    <div class="hero-number" id="hero-count"></div>
-    <div class="hero-label">Technical Writing Portfolio</div>
-    <h1 id="hero-tagline"></h1>
-    <p class="hero-sub" id="hero-sub"></p>
-    <div class="hero-actions">
-      <button class="btn-dark" onclick="document.getElementById('work-anchor').scrollIntoView({behavior:'smooth'})">View selected work</button>
-      <button class="btn-outline" onclick="document.getElementById('about-anchor').scrollIntoView({behavior:'smooth'})">About me</button>
-    </div>
-    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
-  </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-tag-row">
+    <div class="hero-tag">API Documentation</div>
+    <div class="hero-tag">SDK Guides</div>
+    <div class="hero-tag">Developer Experience</div>
+  </div>
+  <div class="hero-number">3</div>
+  <div class="hero-label">Technical Writing Portfolio</div>
+  <h1>Docs that make<br>developers feel<br><em>understood.</em></h1>
+  <p class="hero-sub">I write API and SDK documentation that reduces integration time, lowers support burden, and earns developer trust — for African and global tech companies.</p>
+  <div class="hero-actions">
+    <a href="#work-anchor" class="btn-dark">View selected work</a>
+    <a href="#about-anchor" class="btn-outline">About me</a>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
 
-  <div class="marquee-bar"><div class="marquee-inner" id="marquee"></div></div>
+<!-- MARQUEE -->
+<div class="marquee-bar"><div class="marquee-inner" id="marquee"></div></div>
 
-  <div class="work-section" id="work-anchor">
-    <div class="section-intro">
-      <div>
-        <div class="section-eyebrow">Selected work</div>
-        <div class="section-heading" id="work-heading"></div>
-      </div>
-      <div class="section-desc" id="section-desc"></div>
+<!-- WORK LIST -->
+<div class="work-section" id="work-anchor">
+  <div class="section-intro">
+    <div>
+      <div class="section-eyebrow">Selected work</div>
+      <div class="section-heading">Three pieces.<br>One API.<br>Every angle.</div>
     </div>
-    <div class="pieces-list" id="pieces-list"></div>
+    <div class="section-desc">Each piece approaches the Paystack payment API from a different angle — a documentation audit, an end-to-end integration guide, and a developer experience analysis. Together they demonstrate range, depth, and a writer who thinks like the developer reading the docs.</div>
   </div>
 
-  <div class="about-section" id="about-anchor">
-    <div class="about-inner">
-      <div>
-        <div class="about-eyebrow">About</div>
-        <div class="about-name" id="about-name"></div>
-        <div class="about-bio" id="about-bio"></div>
-        <a id="about-cta" class="btn-dark" style="display:inline-block;text-decoration:none;">Get in touch →</a>
-      </div>
-      <div class="about-right">
-        <div class="about-stat"><div class="stat-label">Speciality</div><div class="stat-value" id="stat-spec"></div></div>
-        <div class="about-stat"><div class="stat-label">Availability</div><div class="stat-value" id="stat-avail"></div></div>
-        <div class="about-stat"><div class="stat-label">Based in</div><div class="stat-value" id="stat-loc"></div></div>
-        <div class="about-stat"><div class="stat-label">Focus markets</div><div class="stat-value" id="stat-mkt"></div></div>
-      </div>
-    </div>
-  </div>
+  <div class="pieces-list">
 
-  <footer>
-    <div class="footer-logo"><div class="logo-dot"></div><span id="footer-name"></span></div>
-    <p>Technical Writer · API & SDK Documentation</p>
-    <p id="footer-loc"></p>
-  </footer>
+    <a class="piece-row" href="paystack-before-after.html">
+      <div class="piece-num">01</div>
+      <div class="piece-info">
+        <div class="piece-badge">Documentation audit</div>
+        <div class="piece-title-main">Paystack API — Before → After Documentation Fix</div>
+        <div class="piece-desc-main">Five critical failures in Paystack's official Initialise documentation — identified, diagnosed, and rewritten for developer clarity.</div>
+        <div class="piece-tags-row">
+          <span class="ptag">Paystack</span>
+          <span class="ptag">REST API</span>
+          <span class="ptag">Audit & rewrite</span>
+        </div>
+      </div>
+      <div class="piece-cta">Read <div class="cta-arrow">→</div></div>
+    </a>
+
+    <a class="piece-row" href="paystack-complete-flow.html">
+      <div class="piece-num">02</div>
+      <div class="piece-info">
+        <div class="piece-badge">End-to-end guide</div>
+        <div class="piece-title-main">Understanding the Complete Payment Flow with Paystack API</div>
+        <div class="piece-desc-main">A sequential walkthrough of the full payment lifecycle — written so every step connects clearly to the next.</div>
+        <div class="piece-tags-row">
+          <span class="ptag">Paystack</span>
+          <span class="ptag">Developer guide</span>
+          <span class="ptag">Integration flow</span>
+        </div>
+      </div>
+      <div class="piece-cta">Read <div class="cta-arrow">→</div></div>
+    </a>
+
+    <a class="piece-row" href="paystack-where-developers-get-stuck.html">
+      <div class="piece-num">03</div>
+      <div class="piece-info">
+        <div class="piece-badge">Developer experience analysis</div>
+        <div class="piece-title-main">Where Developers Get Stuck in Paystack's Payment Flow (And How to Fix It)</div>
+        <div class="piece-desc-main">A diagnosis of the exact moment developers misread the flow as complete — and concrete structural fixes to prevent it.</div>
+        <div class="piece-tags-row">
+          <span class="ptag">Paystack</span>
+          <span class="ptag">DX analysis</span>
+          <span class="ptag">Documentation critique</span>
+        </div>
+      </div>
+      <div class="piece-cta">Read <div class="cta-arrow">→</div></div>
+    </a>
+
+  </div>
 </div>
 
-<div id="detail-container"></div>
-
-<script>
-// ── Populate personal details ──────────────────────────────
-document.getElementById('nav-name').textContent = ME.name;
-document.getElementById('nav-hire').href = 'mailto:' + ME.email;
-document.getElementById('hero-count').textContent = PORTFOLIO.length;
-document.getElementById('hero-tagline').innerHTML = 'Docs that make<br>developers feel<br><em>understood.</em>';
-document.getElementById('hero-sub').textContent = 'I write API and SDK documentation that reduces integration time, lowers support burden, and earns developer trust — for African and global tech companies.';
-document.getElementById('about-name').innerHTML = ME.name.replace(' ', '<br>');
-document.getElementById('about-bio').textContent = ME.bio;
-document.getElementById('about-cta').href = 'mailto:' + ME.email;
-document.getElementById('stat-spec').textContent = ME.speciality;
-document.getElementById('stat-avail').textContent = ME.availability;
-document.getElementById('stat-loc').textContent = ME.location;
-document.getElementById('stat-mkt').textContent = ME.markets;
-document.getElementById('footer-name').textContent = ME.name;
-document.getElementById('footer-loc').textContent = ME.location;
-
-// Work section heading adapts to piece count
-const count = PORTFOLIO.length;
-const headings = {
-  1: 'One piece.<br>One standard.',
-  2: 'Two pieces.<br>Two angles.',
-  3: 'Three pieces.<br>One API.<br>Every angle.',
-  4: 'Four pieces.<br>Multiple APIs.<br>Every angle.',
-  5: 'Five pieces.<br>Range and depth.',
-};
-document.getElementById('work-heading').innerHTML = headings[count] || count + ' pieces.<br>Range and depth.';
-
-// Work section description adapts dynamically from portfolio data
-const apis = [...new Set(PORTFOLIO.flatMap(p => p.tags))].filter(t =>
-  ['Paystack','Flutterwave','Mono','Kuda','Termii','Stripe','Twilio','OpenWeatherMap'].includes(t)
-);
-const types = [...new Set(PORTFOLIO.map(p => p.type))];
-const apiText = apis.length > 1
-  ? apis.slice(0,-1).join(', ') + ' and ' + apis[apis.length-1]
-  : apis[0] || 'multiple APIs';
-const typeText = types.length > 2
-  ? types.slice(0,-1).join(', ').toLowerCase() + ', and ' + types[types.length-1].toLowerCase()
-  : types.map(t => t.toLowerCase()).join(' and ');
-document.getElementById('section-desc').textContent =
-  `${count} piece${count > 1 ? 's' : ''} covering ${apiText} — including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
-
-// ── Marquee ────────────────────────────────────────────────
-const marqueeItems = ['API Documentation','SDK Guides','Developer Experience','Technical Writing','Paystack · Flutterwave · Mono','Documentation Audits','Integration Guides','African Fintech'];
-const m = document.getElementById('marquee');
-[...marqueeItems,...marqueeItems].forEach((t,i)=>{
-  const s = document.createElement('span');
-  s.className = 'marquee-item' + (i%2===0?' gold':'');
-  s.textContent = t;
-  m.appendChild(s);
-});
-
-// ── Build work list ────────────────────────────────────────
-const list = document.getElementById('pieces-list');
-PORTFOLIO.forEach((piece, i) => {
-  const row = document.createElement('div');
-  row.className = 'piece-row';
-  row.onclick = () => showDetail(i);
-  row.innerHTML = `
-    <div class="piece-num">${String(i+1).padStart(2,'0')}</div>
-    <div class="piece-info">
-      <div class="piece-badge">${piece.type}</div>
-      <div class="piece-title-main">${piece.title}</div>
-      <div class="piece-desc-main">${piece.summary}</div>
-      <div class="piece-tags-row">${piece.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+<!-- ABOUT -->
+<div class="about-section" id="about-anchor">
+  <div class="about-inner">
+    <div>
+      <div class="about-eyebrow">About</div>
+      <div class="about-name">Merveille<br>Naomi</div>
+      <div class="about-bio">I'm a technical writer specialising in API and SDK documentation for developer-facing products. My work focuses on the gap between how an API works and how a developer actually understands it — reducing integration time and support overhead for engineering teams across Africa and beyond.</div>
+      <!-- REPLACE with your real email -->
+      <a href="mailto:your@email.com" class="btn-dark">Get in touch →</a>
     </div>
-    <div class="piece-cta">Read <div class="cta-arrow">→</div></div>
-  `;
-  list.appendChild(row);
-});
-
-// ── Build detail pages ─────────────────────────────────────
-const container = document.getElementById('detail-container');
-PORTFOLIO.forEach((piece, i) => {
-  const page = document.createElement('div');
-  page.className = 'detail-page';
-  page.id = 'detail-' + i;
-  page.innerHTML = `
-    <div class="detail-top">
-      <button class="back-btn" onclick="showHome()">← Back to work</button>
-      <div class="detail-badge">${piece.type}</div>
-      <div class="detail-title">${piece.title}</div>
-      <div class="detail-intro">${piece.intro}</div>
-      <div class="detail-meta-row">
-        ${piece.tags.map(t=>`<div class="meta-chip"><div class="meta-chip-dot"></div>${t}</div>`).join('')}
+    <div class="about-right">
+      <div class="about-stat">
+        <div class="stat-label">Speciality</div>
+        <div class="stat-value">API documentation · SDK guides · Developer experience audits</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-label">Availability</div>
+        <div class="stat-value">Open to freelance projects — immediate start</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-label">Based in</div>
+        <div class="stat-value">Abuja, Nigeria · Available remotely worldwide</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-label">Focus markets</div>
+        <div class="stat-value">African fintech · Global API-first companies</div>
       </div>
     </div>
-    <div class="doc-body">${piece.content}</div>
-  `;
-  container.appendChild(page);
-});
+  </div>
+</div>
 
-// ── Navigation ─────────────────────────────────────────────
-function showDetail(i) {
-  document.getElementById('home-view').classList.add('hidden');
-  document.querySelectorAll('.detail-page').forEach(d => d.classList.remove('active'));
-  document.getElementById('detail-' + i).classList.add('active');
-  window.scrollTo({top:0,behavior:'instant'});
-}
-function showHome() {
-  document.getElementById('home-view').classList.remove('hidden');
-  document.querySelectorAll('.detail-page').forEach(d => d.classList.remove('active'));
-  window.scrollTo({top:0,behavior:'instant'});
-}
-</script>
+<footer>
+  <a href="index.html" class="footer-logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <p>Technical Writer · API & SDK Documentation</p>
+  <p>Abuja, Nigeria · Available worldwide</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>

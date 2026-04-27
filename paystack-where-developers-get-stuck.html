@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where Developers Get Stuck in Paystack's Payment Flow | Merveille Naomi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="index.html#about-anchor">About</a></li>
+    </ul>
+    <a href="mailto:your@email.com" class="nav-cta">Hire me</a>
+  </div>
+</nav>
+
+<div class="detail-wrapper">
+  <div class="detail-top">
+    <a href="index.html" class="back-btn">← Back to work</a>
+    <div class="detail-badge">Developer experience analysis</div>
+    <div class="detail-title">Where Developers Get Stuck in Paystack's Payment Flow (And How to Fix It)</div>
+    <div class="detail-intro">The goal of good documentation is to make integration clear and predictable. However, on the Paystack "Accept Payments" page, multiple payment flows are presented together without clear separation.</div>
+    <div class="detail-meta-row">
+      <div class="meta-chip"><div class="meta-chip-dot"></div>Paystack</div>
+      <div class="meta-chip"><div class="meta-chip-dot"></div>DX analysis</div>
+      <div class="meta-chip"><div class="meta-chip-dot"></div>Documentation critique</div>
+    </div>
+  </div>
+
+  <div class="doc-body">
+
+    <h2>Overview</h2>
+    <p>The goal of good documentation is to make integration clear and predictable.</p>
+    <p>However, on the Paystack <a href="https://paystack.com/docs/payments/accept-payments/" target="_blank">"Accept Payments"</a> page, multiple payment flows are presented together without clear separation.</p>
+    <p>This makes it difficult for developers to understand what steps actually apply to their use case.</p>
+    <p>One critical point of confusion occurs after the payment step, what I'll refer to as the verification confusion.</p>
+    <p>This guide focuses on this, explains why it happens and how it can be improved.</p>
+
+    <h2>Where Developers Get Stuck</h2>
+    <p>The documentation already presents a high-level flow with:</p>
+    <ul>
+      <li>The Initialise transaction</li>
+      <li>Complete transaction</li>
+      <li>And Verify transaction</li>
+    </ul>
+    <p>However, as the page progresses, additional concepts are introduced:</p>
+    <ul>
+      <li>Redirects</li>
+      <li>Callback URLs</li>
+      <li>Webhooks</li>
+    </ul>
+    <p>With these not clearly tied back to the main flow.</p>
+    <p>As a result, after a customer completes payment and is redirected, the flow appears finished.</p>
+    <p>At this point, a developer may reasonably assume:</p>
+    <blockquote><p>"The user has paid, so the transaction is complete."</p></blockquote>
+    <p>This is where the confusion occurs.</p>
+
+    <h2>Why This Happens</h2>
+    <p>This confusion is caused by a combination of issues:</p>
+    <ul>
+      <li>Verification is introduced but not strongly emphasised as mandatory.</li>
+      <li>The redirect step gives a false sense of completion.</li>
+      <li>The documentation does not clearly define backend responsibility.</li>
+    </ul>
+    <p>This leads to a dangerous assumption:</p>
+    <ul>
+      <li>That the frontend confirms success</li>
+      <li>That the redirect confirms payment</li>
+    </ul>
+    <p>When in reality, neither of these guarantees that a transaction was successful.</p>
+
+    <h2>What Actually Happens (Correct Mental Model)</h2>
+    <p>Always Remember this:</p>
+    <ul>
+      <li>A payment is not complete when the user finishes interacting with the payment page.</li>
+      <li>It is only complete when your backend verifies the transaction.</li>
+      <li>The frontend can be manipulated, and a redirect only indicates that a flow has ended, not that payment was successful.</li>
+      <li>Your backend must act as the source of truth.</li>
+    </ul>
+
+    <h2>The Correct Way to Handle It</h2>
+    <p>After the user completes payment and is redirected back to your application:</p>
+    <ol>
+      <li>Retrieve the reference from the callback URL</li>
+      <li>Send a request from your backend to verify the transaction:</li>
+    </ol>
+    <pre><code>curl https://api.paystack.co/transaction/verify/:reference</code></pre>
+    <ol start="3">
+      <li>Check the response to confirm that:
+        <ul>
+          <li>The transaction status is successful</li>
+          <li>The amount matches what was expected</li>
+        </ul>
+      </li>
+    </ol>
+    <p>Only after this verification should you grant access or deliver value.</p>
+
+    <h2>How the Paystack Accept Payments Documentation Could Be Improved</h2>
+    <ul>
+      <li>Add an explicit warning: "Payment is not complete until verified".</li>
+      <li>Place the verification step immediately after the redirect step.</li>
+      <li>Clearly define backend verification as a required step, not optional.</li>
+      <li>Separate different payment flows (Popup, Redirect, SDKs) for clarity.</li>
+    </ul>
+
+    <h2>Key Takeaway</h2>
+    <p>A successful payment flow is not complete after the user pays.</p>
+    <p>It is complete only after your backend verifies the transaction.</p>
+    <p>The "Accept Payments" page of Paystack can better help developers with a clear separation of flows.</p>
+
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <p>Technical Writer · API & SDK Documentation</p>
+  <p>Abuja, Nigeria · Available worldwide</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
