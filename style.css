@@ -21,19 +21,19 @@
 }
 
 a {
-  color: gold;
+  color: inherit;
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--cream);
+  color: var(--gold);
 }
 
 /* external link indicator */
 a[href^="http"]::after {
   content: " ↗";
   font-size: 0.75em;
-  color: var(--cream);
+  color: var(--ink3);
 }
 
 html{scroll-behavior:smooth}
