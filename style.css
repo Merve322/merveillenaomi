@@ -20,6 +20,22 @@
   --dark2:#221e17;
 }
 
+a {
+  color: gold;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--cream);
+}
+
+/* external link indicator */
+a[href^="http"]::after {
+  content: " ↗";
+  font-size: 0.75em;
+  color: var(--cream);
+}
+
 html{scroll-behavior:smooth}
 body{
   font-family:'Outfit',sans-serif;
