@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const marquee = document.getElementById('marquee');
   const items = [
     'API Documentation','SDK Guides','Developer Experience',
-    'Technical Writing','Paystack · Flutterwave · Mono',
-    'Documentation Audits','Integration Guides','African Fintech'
+    'Technical Writing','Paystack · Flutterwave · Mono','Stripe · Square · Airwallex',
+    'Documentation Audits','Integration Guides','African Fintech','Global Financial Technology',
   ];
   [...items, ...items].forEach((text, i) => {
     const span = document.createElement('span');
