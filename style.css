@@ -15,7 +15,21 @@
   --dark:#16140f;
   --dark2:#221e17;
 }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
+a:hover {
+  color: var(--gold);
+}
+
+/* external link indicator */
+a[href^="http"]::after {
+  content: " ↗";
+  font-size: 0.75em;
+  color: var(--ink3);
+}
 html{scroll-behavior:smooth}
 body{
   font-family:'Outfit',sans-serif;
