@@ -1,7 +1,4 @@
-/* ============================================================
-   script.js — Merveille Naomi Portfolio
-   Builds the homepage dynamically from PORTFOLIO data
-   ============================================================ */
+
 
 document.addEventListener('DOMContentLoaded', () => {
   
@@ -78,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const marquee = document.getElementById('marquee');
   const items = [
     'API Documentation','SDK Guides','Developer Experience',
-    'Technical Writing','Paystack · Flutterwave · Mono',
-    'Documentation Audits','Integration Guides','African Fintech'
+    'Technical Writing','Paystack · Flutterwave · Mono','Stripe · Square · Airwallex',
+    'Documentation Audits','Integration Guides','Global Financial Technology','African Fintech'
   ];
   [...items, ...items].forEach((text, i) => {
     const span = document.createElement('span');
