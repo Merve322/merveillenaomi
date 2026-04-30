@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Work — Merveille Naomi</title>
+  <meta name="description" content="Complete portfolio of API and SDK documentation work.">
+  <link rel="stylesheet" href="style.css">
+  
+  <script>
+  /* ============================================================
+     This page loads the same PORTFOLIO data from index.html
+     Copy this entire script block whenever you update PORTFOLIO
+     ============================================================ */
+  const PORTFOLIO = [
+    {
+      id: "paystack-before-after",
+      type: "Documentation audit",
+      title: "Paystack API — Before → After Documentation Fix",
+      summary: "Five critical failures in Paystack's official Initialise documentation — identified, diagnosed, and rewritten for developer clarity.",
+      tags: ["Paystack", "REST API", "Audit & rewrite"],
+      filename: "paystack-before-after.html"
+    },
+    {
+      id: "paystack-complete-flow",
+      type: "End-to-end guide",
+      title: "Understanding the Complete Payment Flow with Paystack API",
+      summary: "A sequential walkthrough of the full payment lifecycle — written so every step connects clearly to the next.",
+      tags: ["Paystack", "Developer guide", "Integration flow"],
+      filename: "paystack-complete-flow.html"
+    },
+    {
+      id: "paystack-where-developers-get-stuck",
+      type: "Developer experience analysis",
+      title: "Where Developers Get Stuck in Paystack's Payment Flow (And How to Fix It)",
+      summary: "A diagnosis of the exact moment developers misread the flow as complete — and concrete structural fixes to prevent it.",
+      tags: ["Paystack", "DX analysis", "Documentation critique"],
+      filename: "paystack-where-developers-get-stuck.html"
+    }
+  ];
+
+  const ME = {
+    name: "Merveille Naomi",
+    email: "your@email.com",  // ← REPLACE with your real email
+  };
+  </script>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="index.html#about-anchor">About</a></li>
+    </ul>
+    <a id="nav-hire" class="nav-cta">Hire me</a>
+  </div>
+</nav>
+
+<!-- ARCHIVE HEADER -->
+<div class="archive-header">
+  <a href="index.html" class="back-link">← Back to home</a>
+  <h1 class="archive-title">All work</h1>
+  <p class="archive-count" id="archive-count"></p>
+</div>
+
+<!-- ALL PIECES -->
+<div class="archive-grid" id="archive-grid"></div>
+
+<footer>
+  <a href="index.html" class="footer-logo"><div class="logo-dot"></div><span id="footer-name"></span></a>
+  <p>Technical Writer · API & SDK Documentation</p>
+  <p>Abuja, Nigeria · Available worldwide</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  
+  // Set dynamic content
+  document.getElementById('nav-hire').href = 'mailto:' + ME.email;
+  document.getElementById('footer-name').textContent = ME.name;
+  document.getElementById('archive-count').textContent = PORTFOLIO.length + ' piece' + (PORTFOLIO.length > 1 ? 's' : '');
+
+  // Build archive grid
+  const grid = document.getElementById('archive-grid');
+  PORTFOLIO.forEach((piece, i) => {
+    const card = document.createElement('a');
+    card.className = 'archive-card';
+    card.href = piece.filename;
+    card.innerHTML = `
+      <div class="archive-card-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="archive-card-badge">${piece.type}</div>
+      <div class="archive-card-title">${piece.title}</div>
+      <div class="archive-card-summary">${piece.summary}</div>
+      <div class="archive-card-tags">${piece.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
+      <div class="archive-card-arrow">→</div>
+    `;
+    grid.appendChild(card);
+  });
+
+});
+</script>
+</body>
+</html>

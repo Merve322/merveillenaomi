@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Build work list dynamically ────────────────────────────
   const list = document.getElementById('pieces-list');
-  PORTFOLIO.forEach((piece, i) => {
+  const piecesToShow = PORTFOLIO.slice(0, HOMEPAGE_PIECE_LIMIT);
+  
+  piecesToShow.forEach((piece, i) => {
     const row = document.createElement('a');
     row.className = 'piece-row';
     row.href = piece.filename;
@@ -67,12 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
     list.appendChild(row);
   });
 
+  // Show "View all work" button if there are more pieces than the limit
+  if (PORTFOLIO.length > HOMEPAGE_PIECE_LIMIT) {
+    document.getElementById('view-all-container').style.display = 'block';
+  }
+
   // ── Build marquee ───────────────────────────────────────────
   const marquee = document.getElementById('marquee');
   const items = [
     'API Documentation','SDK Guides','Developer Experience',
-    'Technical Writing','Paystack · Flutterwave · Mono','Stripe · Square · Airwallex',
-    'Documentation Audits','Integration Guides','African Fintech','Global Financial Technology',
+    'Technical Writing','Paystack · Flutterwave · Mono',
+    'Documentation Audits','Integration Guides','African Fintech'
   ];
   [...items, ...items].forEach((text, i) => {
     const span = document.createElement('span');
