@@ -24,7 +24,7 @@
     <a href="index.html" class="back-btn">← Back to work</a>
     <div class="detail-badge">Documentation audit</div>
     <div class="detail-title">Paystack API — Before → After Documentation Fix</div>
-    <div class="detail-intro">The Initialise section of the Paystack API website has several issues that make it harder for developers to understand and implement correctly.</div>
+    <div class="detail-intro">The Initialise section of the Paystack API website has several issues that are addressed, and solutions proposed.</div>
     <div class="detail-meta-row">
       <div class="meta-chip"><div class="meta-chip-dot"></div>Paystack</div>
       <div class="meta-chip"><div class="meta-chip-dot"></div>REST API</div>
@@ -66,7 +66,7 @@
     <p>This:</p>
     <ul>
       <li>Doesn't explain how it is used</li>
-      <li>Doesn't mention the authorization_url (which is actually critical for completing the payment)</li>
+      <li>Doesn't mention the <code>authorization_url</code> (which is actually critical for completing the payment)</li>
     </ul>
 
     <h3>4. The flow is incomplete</h3>
@@ -81,29 +81,6 @@
       <li>and is not integrated into the flow</li>
     </ul>
     <p>This feels poorly placed.</p>
-
-    <div class="compare-grid">
-      <div class="compare-col">
-        <div class="compare-label before">Before</div>
-        <ul>
-          <li>Weak mental model</li>
-          <li>Code introduced too quickly</li>
-          <li>Incomplete response explanation</li>
-          <li>Incomplete flow</li>
-          <li>Disconnected security warning</li>
-        </ul>
-      </div>
-      <div class="compare-col">
-        <div class="compare-label after">After</div>
-        <ul>
-          <li>Clear mental model introduced first</li>
-          <li>Context given before code</li>
-          <li>All response fields explained in context</li>
-          <li>Full flow shown including redirect</li>
-          <li>Security guidance woven naturally into steps</li>
-        </ul>
-      </div>
-    </div>
 
     <h2>The Rewrite</h2>
     <p>Before a customer can make a payment, you need to create a transaction.</p>
@@ -145,6 +122,30 @@
     </div>
 
     <h2>Why This Version is Clearer and Better</h2>
+    
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-label before">Before</div>
+        <ul>
+          <li>Weak mental model</li>
+          <li>Code introduced too quickly</li>
+          <li>Incomplete response explanation</li>
+          <li>Incomplete flow</li>
+          <li>Disconnected security warning</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label after">After</div>
+        <ul>
+          <li>Clear mental model introduced first</li>
+          <li>Context given before code</li>
+          <li>All response fields explained in context</li>
+          <li>Full flow shown including redirect</li>
+          <li>Security guidance woven naturally into steps</li>
+        </ul>
+      </div>
+    </div>
+
     <p>Unlike Paystack's, this version:</p>
     <ul>
       <li>Introduces a clear mental model before showing code.</li>
