@@ -12,10 +12,10 @@
   <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="index.html">Work</a></li>
+      <li><a href="index.html#work-anchor">Work</a></li>
       <li><a href="index.html#about-anchor">About</a></li>
     </ul>
-    <a href="mailto:your@email.com" class="nav-cta">Hire me</a>
+    <a href="mailto:njikoumerveille@gmail.com" class="nav-cta">Hire me</a>
   </div>
 </nav>
 
@@ -24,7 +24,7 @@
     <a href="index.html" class="back-btn">← Back to work</a>
     <div class="detail-badge">Developer experience analysis</div>
     <div class="detail-title">Where Developers Get Stuck in Paystack's Payment Flow (And How to Fix It)</div>
-    <div class="detail-intro">The goal of good documentation is to make integration clear and predictable. However, on the Paystack "Accept Payments" page, multiple payment flows are presented together without clear separation.</div>
+    <div class="detail-intro">Good documentation should be clear and predictable. Paystack's "Accept Payments" page has multiple payment flows presented together without clear separation, thereby making it more likely to cause developer confusion.</div>
     <div class="detail-meta-row">
       <div class="meta-chip"><div class="meta-chip-dot"></div>Paystack</div>
       <div class="meta-chip"><div class="meta-chip-dot"></div>DX analysis</div>
@@ -38,7 +38,7 @@
     <p>The goal of good documentation is to make integration clear and predictable.</p>
     <p>However, on the Paystack <a href="https://paystack.com/docs/payments/accept-payments/" target="_blank">"Accept Payments"</a> page, multiple payment flows are presented together without clear separation.</p>
     <p>This makes it difficult for developers to understand what steps actually apply to their use case.</p>
-    <p>One critical point of confusion occurs after the payment step, what I'll refer to as the verification confusion.</p>
+    <p>One critical point of confusion occurs after the payment step, which I'll refer to as the verification confusion.</p>
     <p>This guide focuses on this, explains why it happens and how it can be improved.</p>
 
     <h2>Where Developers Get Stuck</h2>
@@ -109,9 +109,11 @@
     </ul>
 
     <h2>Key Takeaway</h2>
-    <p>A successful payment flow is not complete after the user pays.</p>
-    <p>It is complete only after your backend verifies the transaction.</p>
-    <p>The "Accept Payments" page of Paystack can better help developers with a clear separation of flows.</p>
+    <ol>
+      <li>A successful payment flow is not complete after the user pays.</li>
+      <li>It is complete only after your backend verifies the transaction.</li>
+      <li>The "Accept Payments" page of Paystack can better help developers with a clear separation of flows.</li>
+    </ol>
 
   </div>
 </div>
