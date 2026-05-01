@@ -12,10 +12,10 @@
   <a href="index.html" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="index.html">Work</a></li>
+      <li><a href="index.html#work-anchor">Work</a></li>
       <li><a href="index.html#about-anchor">About</a></li>
     </ul>
-    <a href="mailto:your@email.com" class="nav-cta">Hire me</a>
+    <a href="mailto:njikoumerveille@gmail.com" class="nav-cta">Hire me</a>
   </div>
 </nav>
 
@@ -87,13 +87,20 @@
     <p>Use the <code>reference</code> returned during initialisation from step 1 to confirm that the payment was successful before granting access or delivering value.</p>
 
     <h2>Putting It All Together</h2>
-    <p>The flow begins when your server initialises a transaction and receives an authorisation URL.</p>
-    <p>The customer is redirected to this URL to complete payment.</p>
-    <p>After payment, your server verifies the transaction using the reference to confirm its status before taking any action.</p>
+    <ol>
+      <li>The flow begins when your server initialises a transaction and receives an authorisation URL</li>
+      <li>The customer is redirected to this URL to complete payment.</li>
+      <li>After payment, your server verifies the transaction using the reference to confirm its status before taking any action.</li>
+    </ol>
 
     <div class="callout-box">
       <div class="callout-label">Common Mistakes Developers Make</div>
-      <p>Verifying payment on the frontend · Not storing the transaction reference · Skipping the verification step · Exposing their secret key</p>
+      <ul>
+        <li>Verifying payment on the frontend</li>
+        <li>Not storing the transaction reference</li>
+        <li>Skipping the verification step</li>
+        <li> Exposing their secret key</li>
+      </ul>
     </div>
 
   </div>
