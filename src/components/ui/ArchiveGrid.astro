@@ -1,0 +1,24 @@
+---
+import type { PortfolioPiece } from '../../data/portfolio';
+
+interface Props {
+  pieces: PortfolioPiece[];
+}
+
+const { pieces } = Astro.props;
+---
+
+<div class="archive-grid">
+  {pieces.map((piece, i) => (
+    <a class="archive-card" href={`/pieces/${piece.id}`}>
+      <div class="archive-card-num">{String(i + 1).padStart(2, '0')}</div>
+      <div class="archive-card-badge">{piece.type}</div>
+      <div class="archive-card-title">{piece.title}</div>
+      <div class="archive-card-summary">{piece.summary}</div>
+      <div class="archive-card-tags">
+        {piece.tags.map((t: string) => <span class="ptag">{t}</span>)}
+      </div>
+      <div class="archive-card-arrow">→</div>
+    </a>
+  ))}
+</div>

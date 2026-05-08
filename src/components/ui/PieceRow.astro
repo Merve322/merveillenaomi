@@ -1,0 +1,23 @@
+---
+import type { PortfolioPiece } from '../../data/portfolio';
+
+interface Props {
+  piece: PortfolioPiece;
+  index: number;
+}
+
+const { piece, index } = Astro.props;
+---
+
+<a class="piece-row" href={`/pieces/${piece.id}`}>
+  <div class="piece-num">{String(index + 1).padStart(2, '0')}</div>
+  <div class="piece-info">
+    <div class="piece-badge">{piece.type}</div>
+    <div class="piece-title-main">{piece.title}</div>
+    <div class="piece-desc-main">{piece.summary}</div>
+    <div class="piece-tags-row">
+      {piece.tags.map((t: string) => <span class="ptag">{t}</span>)}
+    </div>
+  </div>
+  <div class="piece-cta">Read <div class="cta-arrow">→</div></div>
+</a>

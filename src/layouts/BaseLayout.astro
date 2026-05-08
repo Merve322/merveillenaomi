@@ -1,0 +1,37 @@
+---
+import { ME } from '../data/portfolio';
+import NavBar from '../components/ui/NavBar.astro';
+import Footer from '../components/ui/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  isArticlePage?: boolean;
+}
+
+const { title, description = 'API and SDK documentation that developers understand and build with.', isArticlePage = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+
+<NavBar isArticlePage={isArticlePage} />
+
+{isArticlePage ? (
+  <div class="detail-wrapper">
+    <slot />
+  </div>
+) : (
+  <slot />
+)}
+
+<Footer />
+</body>
+</html>

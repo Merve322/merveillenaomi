@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PORTFOLIO } from '../data/portfolio';
+import ArchiveHeader from '../components/ui/ArchiveHeader.astro';
+import ArchiveGrid from '../components/ui/ArchiveGrid.astro';
+
+const pieces = PORTFOLIO;
+---
+
+<BaseLayout
+  title="All Work — Merveille Naomi"
+  description="Complete portfolio of API and SDK documentation work."
+  isArticlePage={true}
+>
+  <ArchiveHeader pieces={pieces} />
+  <ArchiveGrid pieces={pieces} />
+</BaseLayout>

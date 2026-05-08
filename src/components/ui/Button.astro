@@ -1,0 +1,18 @@
+---
+interface Props {
+  variant: 'dark' | 'outline';
+  children: any;
+  href?: string;
+  class?: string;
+}
+
+const { variant, children, href, class: className = '' } = Astro.props;
+const baseClass = variant === 'dark' ? 'btn-dark' : 'btn-outline';
+---
+
+<a 
+  href={href || '#'} 
+  class={`${baseClass} ${className}`.trim()}
+>
+  {children}
+</a>

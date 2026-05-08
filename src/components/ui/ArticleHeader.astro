@@ -1,0 +1,25 @@
+---
+interface Props {
+  type: string;
+  title: string;
+  intro: string;
+  tags: string[];
+}
+
+const { type, title, intro, tags } = Astro.props;
+---
+
+<div class="detail-top">
+  <a href="/" class="back-btn">← Back to work</a>
+  <div class="detail-badge">{type}</div>
+  <div class="detail-title">{title}</div>
+  <div class="detail-intro">{intro}</div>
+  <div class="detail-meta-row">
+    {tags.map(tag => (
+      <div class="meta-chip">
+        <div class="meta-chip-dot"></div>
+        {tag}
+      </div>
+    ))}
+  </div>
+</div>

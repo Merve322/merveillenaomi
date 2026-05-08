@@ -1,0 +1,26 @@
+---
+import type { PortfolioPiece } from '../../data/portfolio';
+
+interface Props {
+  piece: PortfolioPiece;
+}
+
+const { piece } = Astro.props;
+---
+
+<div class="doc-body">
+  <slot />
+  {Astro.slots.default ? null : (
+    <div class="callout-box">
+      <div class="callout-label">Article unavailable</div>
+      <p>
+        This article component could not be found. Add a content component for this piece in
+        <code>src/components/articles/content</code> and register it in
+        <code>src/pages/pieces/[slug].astro</code>.
+      </p>
+      <p style="margin-top:0.6rem;">
+        Missing article slug: <code>{piece.id}</code>
+      </p>
+    </div>
+  )}
+</div>

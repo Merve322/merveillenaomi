@@ -1,0 +1,33 @@
+---
+import { ME } from '../../data/portfolio';
+import StatBox from './StatBox.astro';
+
+interface Props {
+  name: string;
+  bio: string;
+  email: string;
+  speciality: string;
+  availability: string;
+  location: string;
+  markets: string;
+}
+
+const { name, bio, email, speciality, availability, location, markets } = Astro.props;
+---
+
+<div class="about-section" id="about-anchor">
+  <div class="about-inner">
+    <div>
+      <div class="about-eyebrow">About</div>
+      <div class="about-name" set:html={name.replace(' ', '<br>')} />
+      <div class="about-bio">{bio}</div>
+      <a href={`mailto:${email}`} class="btn-dark">Get in touch �+'</a>
+    </div>
+    <div class="about-right">
+      <StatBox label="Speciality" value={speciality} />
+      <StatBox label="Availability" value={availability} />
+      <StatBox label="Based in" value={location} />
+      <StatBox label="Focus markets" value={markets} />
+    </div>
+  </div>
+</div>

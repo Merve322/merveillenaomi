@@ -1,0 +1,15 @@
+---
+import type { PortfolioPiece } from '../../data/portfolio';
+
+interface Props {
+  pieces: PortfolioPiece[];
+}
+
+const { pieces } = Astro.props;
+---
+
+<div class="archive-header">
+  <a href="/" class="back-link">← Back to home</a>
+  <h1 class="archive-title">All work</h1>
+  <p class="archive-count">{pieces.length} piece{pieces.length !== 1 ? 's' : ''}</p>
+</div>

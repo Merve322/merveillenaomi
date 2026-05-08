@@ -1,0 +1,17 @@
+---
+interface Props {
+  eyebrow: string;
+  heading: string | any; // Can be string or JSX for set:html
+  description: string;
+}
+
+const { eyebrow, heading, description } = Astro.props;
+---
+
+<div class="section-intro">
+  <div>
+    <div class="section-eyebrow">{eyebrow}</div>
+    <div class="section-heading" set:html={heading} />
+  </div>
+  <div class="section-desc">{description}</div>
+</div>

@@ -1,0 +1,20 @@
+---
+import { ME } from '../../data/portfolio';
+
+interface Props {
+  isArticlePage?: boolean;
+}
+
+const { isArticlePage = false } = Astro.props;
+---
+
+<nav>
+  <a href="/" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href={isArticlePage ? '/#work-anchor' : '#work-anchor'}>Work</a></li>
+      <li><a href={isArticlePage ? '/#about-anchor' : '#about-anchor'}>About</a></li>
+    </ul>
+    <a href={`mailto:${ME.email}`} class="nav-cta">Hire me</a>
+  </div>
+</nav>

@@ -1,0 +1,31 @@
+---
+import { PORTFOLIO } from '../../data/portfolio';
+import ArticleLayout from '../../components/layout/ArticleLayout.astro';
+import PaystackWhereDevelopersGetStuckArticle from '../../components/articles/content/PaystackWhereDevelopersGetStuckArticle.astro';
+import PaystackCompleteFlowArticle from '../../components/articles/content/PaystackCompleteFlowArticle.astro';
+import PaystackBeforeAfterArticle from '../../components/articles/content/PaystackBeforeAfterArticle.astro';
+
+export async function getStaticPaths() {
+  return PORTFOLIO.map(piece => ({
+    params: { slug: piece.id },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+const articleComponents = {
+  'paystack-where-developers-get-stuck': PaystackWhereDevelopersGetStuckArticle,
+  'paystack-complete-flow': PaystackCompleteFlowArticle,
+  'paystack-before-after': PaystackBeforeAfterArticle,
+} as const;
+
+const Content = articleComponents[piece.id as keyof typeof articleComponents] ?? null;
+---
+
+<ArticleLayout
+  title={`${piece.title} | Merveille Naomi`}
+  description={piece.summary}
+  piece={piece}
+>
+  {Content ? <Content /> : null}
+</ArticleLayout>

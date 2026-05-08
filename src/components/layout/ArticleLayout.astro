@@ -1,0 +1,27 @@
+---
+import type { PortfolioPiece } from '../../data/portfolio';
+import BaseLayout from './BaseLayout.astro';
+import ArticleHeader from '../ui/ArticleHeader.astro';
+import ArticleBody from '../ui/ArticleBody.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  piece: PortfolioPiece;
+}
+
+const { title, description, piece } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} isArticlePage={true}>
+  <ArticleHeader 
+    type={piece.type} 
+    title={piece.title} 
+    intro={piece.intro} 
+    tags={piece.tags} 
+  />
+   
+  <ArticleBody piece={piece}>
+    <slot />
+  </ArticleBody>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    {[...items, ...items].map((text, i) => (
+      <span class={`marquee-item${i % 2 === 0 ? ' gold' : ''}`}>{text}</span>
+    ))}
+  </div>
+</div>
