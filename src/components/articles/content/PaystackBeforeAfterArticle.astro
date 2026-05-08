@@ -3,6 +3,8 @@ import ArticleSection from '../shared/ArticleSection.astro';
 import ArticleCallout from '../shared/ArticleCallout.astro';
 import ArticleCodeBlock from '../shared/ArticleCodeBlock.astro';
 import BeforeAfterComparison from '../special/BeforeAfterComparison.astro';
+import Before from '../special/Before.astro';
+import After from '../special/After.astro';
 ---
 
 <ArticleSection title="Overview">
@@ -104,7 +106,26 @@ import BeforeAfterComparison from '../special/BeforeAfterComparison.astro';
 </ArticleCallout>
 
 <ArticleSection title="Why This Version is Clearer and Better">
-  <BeforeAfterComparison />
+  <BeforeAfterComparison>
+    <Before>
+      <ul>
+      <li>Weak mental model</li>
+      <li>Code introduced too quickly</li>
+      <li>Incomplete response explanation</li>
+      <li>Incomplete flow</li>
+      <li>Disconnected security warning</li>
+    </ul> 
+    </Before>
+    <After>
+      <ul>
+      <li>Clear mental model introduced first</li>
+      <li>Context given before code</li>
+      <li>All response fields explained in context</li>
+      <li>Full flow shown including redirect</li>
+      <li>Security guidance woven naturally into steps</li>
+    </ul>
+    </After>
+  </BeforeAfterComparison>
   <p>Unlike Paystack's, this version:</p>
   <ul>
     <li>Introduces a clear mental model before showing code.</li>
