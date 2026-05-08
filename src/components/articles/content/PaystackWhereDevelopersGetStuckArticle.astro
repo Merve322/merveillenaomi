@@ -1,0 +1,93 @@
+---
+import ArticleSection from '../shared/ArticleSection.astro';
+import ArticleCodeBlock from '../shared/ArticleCodeBlock.astro';
+---
+
+<ArticleSection title="Overview">
+  <p>The goal of good documentation is to make integration clear and predictable.</p>
+  <p>
+    However, on the Paystack <a href="https://paystack.com/docs/payments/accept-payments/" target="_blank">"Accept Payments"</a> page, multiple payment flows are presented together without clear separation.
+  </p>
+  <p>This makes it difficult for developers to understand what steps actually apply to their use case.</p>
+  <p>One critical point of confusion occurs after the payment step, which I'll refer to as the verification confusion.</p>
+  <p>This guide focuses on this, explains why it happens and how it can be improved.</p>
+</ArticleSection>
+
+<ArticleSection title="Where Developers Get Stuck">
+  <p>The documentation already presents a high-level flow with:</p>
+  <ul>
+    <li>Complete transaction</li>
+    <li>And Verify transaction</li>
+  </ul>
+  <p>However, as the page progresses, additional concepts are introduced:</p>
+  <ul>
+    <li>Redirects</li>
+    <li>Callback URLs</li>
+    <li>Webhooks</li>
+  </ul>
+  <p>With these not clearly tied back to the main flow.</p>
+  <p>As a result, after a customer completes payment and is redirected, the flow appears finished.</p>
+  <p>At this point, a developer may reasonably assume:</p>
+  <blockquote><p>"The user has paid, so the transaction is complete."</p></blockquote>
+  <p>This is where the confusion occurs.</p>
+</ArticleSection>
+
+<ArticleSection title="Why This Happens">
+  <p>This confusion is caused by a combination of issues:</p>
+  <ul>
+    <li>Verification is introduced but not strongly emphasised as mandatory.</li>
+    <li>The redirect step gives a false sense of completion.</li>
+    <li>The documentation does not clearly define backend responsibility.</li>
+  </ul>
+  <p>This leads to a dangerous assumption:</p>
+  <ul>
+    <li>That the frontend confirms success</li>
+    <li>That the redirect confirms payment</li>
+  </ul>
+  <p>When in reality, neither of these guarantees that a transaction was successful.</p>
+</ArticleSection>
+
+<ArticleSection title="What Actually Happens (Correct Mental Model)">
+  <p>Always remember this:</p>
+  <ul>
+    <li>A payment is not complete when the user finishes interacting with the payment page.</li>
+    <li>It is only complete when your backend verifies the transaction.</li>
+    <li>The frontend can be manipulated, and a redirect only indicates that a flow has ended, not that payment was successful.</li>
+    <li>Your backend must act as the source of truth.</li>
+  </ul>
+</ArticleSection>
+
+<ArticleSection title="The Correct Way to Handle It">
+  <p>After the user completes payment and is redirected back to your application:</p>
+  <ol>
+    <li>Retrieve the reference from the callback URL</li>
+    <li>Send a request from your backend to verify the transaction:</li>
+  </ol>
+  <ArticleCodeBlock code={`curl https://api.paystack.co/transaction/verify/:reference`} />
+  <ol start="3">
+    <li>Check the response to confirm that:
+      <ul>
+        <li>The transaction status is successful</li>
+        <li>The amount matches what was expected</li>
+      </ul>
+    </li>
+  </ol>
+  <p>Only after this verification should you grant access or deliver value.</p>
+</ArticleSection>
+
+<ArticleSection title="How the Paystack Accept Payments Documentation Could Be Improved">
+  <ul>
+    <li>Add an explicit warning: "Payment is not complete until verified".</li>
+    <li>Place the verification step immediately after the redirect step.</li>
+    <li>Clearly define backend verification as a required step, not optional.</li>
+    <li>Separate different payment flows (Popup, Redirect, SDKs) for clarity.</li>
+  </ul>
+</ArticleSection>
+
+<ArticleSection title="Key Takeaway">
+  <ol>
+    <li>A successful payment flow is not complete after the user pays.</li>
+    <li>It is complete only after your backend verifies the transaction.</li>
+    <li>The "Accept Payments" page of Paystack can better help developers with a clear separation of flows.</li>
+  </ol>
+</ArticleSection>

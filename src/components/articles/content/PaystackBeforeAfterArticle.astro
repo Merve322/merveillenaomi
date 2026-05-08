@@ -1,0 +1,117 @@
+---
+import ArticleSection from '../shared/ArticleSection.astro';
+import ArticleCallout from '../shared/ArticleCallout.astro';
+import ArticleCodeBlock from '../shared/ArticleCodeBlock.astro';
+import BeforeAfterComparison from '../special/BeforeAfterComparison.astro';
+---
+
+<ArticleSection title="Overview">
+  <p>
+    The <a href="https://paystack.com/docs/payments/accept-payments/" target="_blank">Initialise</a> section of the Paystack API website has several issues that make it harder for developers to understand and implement correctly.
+  </p>
+  <p>These problems are identified here, with a clearer fix rewritten, and an explanation for why the improved version is better.</p>
+</ArticleSection>
+
+<ArticleSection title="The Problem">
+  <ArticleSection level="h3" title="1. The section presents a weak mental model">
+    <p>The documentation says:</p>
+    <blockquote><p>"Initialise the transaction from your backend"</p></blockquote>
+    <p>It doesn't clearly answer:</p>
+    <ul>
+      <li>What is initialising?</li>
+      <li>What does it actually do in the payment flow?</li>
+    </ul>
+    <p>This can be difficult for a beginner to grasp, leaving them without a clear understanding of the step.</p>
+  </ArticleSection>
+
+  <ArticleSection level="h3" title="2. It jumps into code too fast">
+    <p>The code is introduced too quickly, going straight to:</p>
+    <ArticleCodeBlock code={`curl https://api.paystack.co/transaction/initialize`} />
+    <p>Without clearly explaining:</p>
+    <ul>
+      <li>What this request represents</li>
+      <li>What the developer is trying to achieve</li>
+    </ul>
+    <p>This can quickly increase cognitive load.</p>
+  </ArticleSection>
+
+  <ArticleSection level="h3" title="3. Incomplete explanation of the response">
+    <p>It says:</p>
+    <blockquote><p>"access_code parameter... needed to complete the transaction"</p></blockquote>
+    <p>This:</p>
+    <ul>
+      <li>Doesn't explain how it is used</li>
+      <li>Doesn't mention the <code>authorization_url</code> (which is actually critical for completing the payment)</li>
+    </ul>
+  </ArticleSection>
+
+  <ArticleSection level="h3" title="4. The flow is incomplete">
+    <p>The developer doesn't see the full picture or what happens after initialisation.</p>
+    <p>What should have been said:</p>
+    <blockquote><p>"After this → redirect user → payment happens"</p></blockquote>
+  </ArticleSection>
+
+  <ArticleSection level="h3" title="5. The warning is disconnected">
+    <p>The "Don't use your secret key…" section:</p>
+    <ul>
+      <li>Feels abrupt</li>
+      <li>And is not integrated into the flow</li>
+    </ul>
+    <p>This feels poorly placed.</p>
+  </ArticleSection>
+</ArticleSection>
+
+<ArticleSection title="The Rewrite">
+  <p>Before a customer can make a payment, you need to create a transaction.</p>
+  <p>When you are initialising a transaction, you are telling Paystack:</p>
+  <ul>
+    <li>Who is making the payment</li>
+    <li>How much they should be charged</li>
+    <li>To prepare a payment session for them</li>
+  </ul>
+  <p>Follow these steps from your backend to keep your secret key secure.</p>
+</ArticleSection>
+
+<ArticleSection title="Step 1: Send a request to Paystack">
+  <p>To initialise a transaction, send a POST request to Paystack's API from your server:</p>
+  <ArticleCodeBlock code={`curl -X POST https://api.paystack.co/transaction/initialize \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "email": "customer@email.com",
+        "amount": 500000
+      }'`} />
+  <p>This request creates a new transaction for the specified customer and amount.</p>
+</ArticleSection>
+
+<ArticleSection title="Step 2: Handle the response">
+  <p>Paystack returns a response containing important details about the transaction.</p>
+  <p>Inside the <code>data</code> object, you'll find:</p>
+  <ul>
+    <li><code>authorization_url</code>: This is the link where the customer completes the payment.</li>
+    <li><code>reference</code>: A unique ID for tracking the transaction.</li>
+    <li><code>access_code</code>: Used internally to verify and manage the transaction.</li>
+  </ul>
+</ArticleSection>
+
+<ArticleSection title="Step 3: Redirect the customer">
+  <p>To complete the payment, redirect the customer to the <code>authorization_url</code>.</p>
+  <p>This takes them to Paystack's secure payment page, where they can enter their payment details.</p>
+</ArticleSection>
+
+<ArticleCallout label="Important: Keep your secret key secure">
+  <p>Always initialise transactions from your backend. Never call Paystack's API directly from your frontend, as this would expose your secret key. Instead, your frontend should communicate with your server, which then makes the request to Paystack.</p>
+</ArticleCallout>
+
+<ArticleSection title="Why This Version is Clearer and Better">
+  <BeforeAfterComparison />
+  <p>Unlike Paystack's, this version:</p>
+  <ul>
+    <li>Introduces a clear mental model before showing code.</li>
+    <li>Explains what "initialise" means in practical terms.</li>
+    <li>Breaks the process into logical steps.</li>
+    <li>Clearly shows what happens after the API call.</li>
+    <li>Explains key response fields in context.</li>
+    <li>Integrates security guidance naturally into the flow.</li>
+  </ul>
+</ArticleSection>
