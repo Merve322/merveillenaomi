@@ -10,7 +10,7 @@ const { pieces } = Astro.props;
 
 <div class="archive-grid">
   {pieces.map((piece, i) => (
-    <a class="archive-card" href={`/pieces/${piece.id}`}>
+    <a class="archive-card" href={`/pieces/${piece.id}`} data-astro-prefetch>
       <div class="archive-card-num">{String(i + 1).padStart(2, '0')}</div>
       <div class="archive-card-badge">{piece.type}</div>
       <div class="archive-card-title">{piece.title}</div>

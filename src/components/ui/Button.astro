@@ -8,11 +8,13 @@ interface Props {
 
 const { variant, children, href, class: className = '' } = Astro.props;
 const baseClass = variant === 'dark' ? 'btn-dark' : 'btn-outline';
+const prefetch = Boolean(href?.startsWith('/'));
 ---
 
 <a 
-  href={href || '#'} 
+  href={href || '#'}
   class={`${baseClass} ${className}`.trim()}
+  {...(prefetch ? { 'data-astro-prefetch': true } : {})}
 >
   {children}
 </a>

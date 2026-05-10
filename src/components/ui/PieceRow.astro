@@ -9,7 +9,7 @@ interface Props {
 const { piece, index } = Astro.props;
 ---
 
-<a class="piece-row" href={`/pieces/${piece.id}`}>
+<a class="piece-row" href={`/pieces/${piece.id}`} data-astro-prefetch>
   <div class="piece-num">{String(index + 1).padStart(2, '0')}</div>
   <div class="piece-info">
     <div class="piece-badge">{piece.type}</div>

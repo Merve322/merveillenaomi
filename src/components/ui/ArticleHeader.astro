@@ -10,7 +10,7 @@ const { type, title, intro, tags } = Astro.props;
 ---
 
 <div class="detail-top">
-  <a href="/" class="back-btn">← Back to work</a>
+  <a href="/" class="back-btn" data-astro-prefetch>← Back to work</a>
   <div class="detail-badge">{type}</div>
   <div class="detail-title">{title}</div>
   <div class="detail-intro">{intro}</div>

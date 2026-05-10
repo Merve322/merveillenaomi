@@ -9,7 +9,7 @@ const { isArticlePage = false } = Astro.props;
 ---
 
 <nav>
-  <a href="/" class="logo"><div class="logo-dot"></div>Merveille Naomi</a>
+  <a href="/" class="logo" data-astro-prefetch><div class="logo-dot"></div>Merveille Naomi</a>
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href={isArticlePage ? '/#work-anchor' : '#work-anchor'}>Work</a></li>
