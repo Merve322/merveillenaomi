@@ -54,6 +54,50 @@ export const PORTFOLIO: PortfolioPiece[] = [
 
 export const HOMEPAGE_PIECE_LIMIT = 4;
 
+/** Tags treated as API/product names when generating the work section blurb. */
+export const KNOWN_API_TAGS = [
+  'Paystack',
+  'Flutterwave',
+  'Mono',
+  'Kuda',
+  'Termii',
+  'Stripe',
+  'Twilio',
+  'OpenWeatherMap',
+] as const;
+
+/** Dynamic heading and description for the homepage work section (single source of truth). */
+export function getWorkSectionCopy(pieces: PortfolioPiece[]) {
+  const headings: Record<number, string> = {
+    1: 'One piece.<br>One standard.',
+    2: 'Two pieces.<br>Two angles.',
+    3: 'Three pieces.<br>One API.<br>Every angle.',
+    4: 'Four pieces.<br>Multiple APIs.<br>Every angle.',
+    5: 'Five pieces.<br>Range and depth.',
+  };
+
+  const workHeading =
+    headings[pieces.length] ?? `${pieces.length} pieces.<br>Range and depth.`;
+
+  const known = new Set<string>(KNOWN_API_TAGS);
+  const apis = [...new Set(pieces.flatMap(p => p.tags))].filter(t => known.has(t));
+  const types = [...new Set(pieces.map(p => p.type))];
+
+  const apiText =
+    apis.length > 1
+      ? `${apis.slice(0, -1).join(', ')} and ${apis[apis.length - 1]}`
+      : apis[0] ?? 'multiple APIs';
+
+  const typeText =
+    types.length > 2
+      ? `${types.slice(0, -1).join(', ').toLowerCase()}, and ${types[types.length - 1].toLowerCase()}`
+      : types.map(t => t.toLowerCase()).join(' and ');
+
+  const workDesc = `${pieces.length} piece${pieces.length > 1 ? 's' : ''} covering ${apiText} — including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
+
+  return { workHeading, workDesc };
+}
+
 export const ME = {
   name: "Merveille Naomi",
   email: "njikoumerveille@gmail.com",

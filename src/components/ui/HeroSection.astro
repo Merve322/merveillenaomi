@@ -2,50 +2,32 @@
 import { ME } from '../../data/portfolio';
 
 interface Props {
-  pieces: any[];
+  pieces: { id: string }[];
 }
 
 const { pieces } = Astro.props;
-
-// Dynamic work heading
-const headings: Record<number, string> = {
-  1: 'One piece.<br>One standard.',
-  2: 'Two pieces.<br>Two angles.',
-  3: 'Three pieces.<br>One API.<br>Every angle.',
-  4: 'Four pieces.<br>Multiple APIs.<br>Every angle.',
-  5: 'Five pieces.<br>Range and depth.',
-};
-const workHeading = headings[pieces.length] ?? `${pieces.length} pieces.<br>Range and depth.`;
-
-// Dynamic description
-const knownApis = ['Paystack','Flutterwave','Mono','Kuda','Termii','Stripe','Twilio','OpenWeatherMap'];
-const apis = [...new Set(pieces.flatMap(p => p.tags))].filter(t => knownApis.includes(t));
-const types = [...new Set(pieces.map(p => p.type))];
-
-const apiText = apis.length > 1
-  ? apis.slice(0,-1).join(', ') + ' and ' + apis[apis.length-1]
-  : apis[0] ?? 'multiple APIs';
-const typeText = types.length > 2
-  ? types.slice(0,-1).join(', ').toLowerCase() + ', and ' + types[types.length-1].toLowerCase()
-  : types.map(t => t.toLowerCase()).join(' and ');
-const workDesc = `${pieces.length} piece${pieces.length > 1 ? 's' : ''} covering ${apiText} �?" including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
 ---
 
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-lines"></div>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-lines" aria-hidden="true"></div>
   <div class="hero-tag-row">
     <div class="hero-tag">API Documentation</div>
     <div class="hero-tag">SDK Guides</div>
     <div class="hero-tag">Developer Experience</div>
   </div>
-  <div class="hero-number">{pieces.length}</div>
-  <div class="hero-label">Technical Writing Portfolio</div>
-  <h1 set:html={ME.tagline} />
-  <p class="hero-sub">{ME.subtagline}</p>
-  <div class="hero-actions">
-    <a href="#work-anchor" class="btn-dark">View selected work</a>
-    <a href="#about-anchor" class="btn-outline">About me</a>
+  <div class="hero-number" aria-hidden="true">{pieces.length}</div>
+  <div class="hero-content">
+    <div class="hero-label">Technical Writing Portfolio</div>
+    <h1 set:html={ME.tagline} />
+    <p class="hero-sub">{ME.subtagline}</p>
+    <div class="hero-actions">
+      <a href="#work-anchor" class="btn-dark">View selected work</a>
+      <a href="#about-anchor" class="btn-outline">About me</a>
+    </div>
   </div>
-  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+ <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>

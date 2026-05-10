@@ -20,7 +20,7 @@ const { name, bio, email, speciality, availability, location, markets } = Astro.
       <div class="about-eyebrow">About</div>
       <div class="about-name" set:html={name.replace(' ', '<br>')} />
       <div class="about-bio">{bio}</div>
-      <a id="about-cta" class="btn-dark" href="mailto:njikoumerveille@gmail.com">Get in touch →</a>
+      <a id="about-cta" class="btn-dark" href={`mailto:${email}`}>Get in touch →</a>
     </div>
     <div class="about-right">
       <StatBox label="Speciality" value={speciality} />

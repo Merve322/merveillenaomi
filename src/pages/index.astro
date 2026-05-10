@@ -1,7 +1,11 @@
 ---
-import '../styles/styles.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PORTFOLIO, HOMEPAGE_PIECE_LIMIT, ME } from '../data/portfolio';
+import {
+  PORTFOLIO,
+  HOMEPAGE_PIECE_LIMIT,
+  ME,
+  getWorkSectionCopy,
+} from '../data/portfolio';
 import HeroSection from '../components/ui/HeroSection.astro';
 import MarqueeBar from '../components/ui/MarqueeBar.astro';
 import SectionIntro from '../components/ui/SectionIntro.astro';
@@ -13,29 +17,7 @@ const pieces = PORTFOLIO;
 const piecesToShow = pieces.slice(0, HOMEPAGE_PIECE_LIMIT);
 const hasMore = pieces.length > HOMEPAGE_PIECE_LIMIT;
 
-// Dynamic work heading
-const headings: Record<number, string> = {
-  1: 'One piece.<br>One standard.',
-  2: 'Two pieces.<br>Two angles.',
-  3: 'Three pieces.<br>One API.<br>Every angle.',
-  4: 'Four pieces.<br>Multiple APIs.<br>Every angle.',
-  5: 'Five pieces.<br>Range and depth.',
-};
-const workHeading = headings[pieces.length] ?? `${pieces.length} pieces.<br>Range and depth.`;
-
-// Dynamic description
-const knownApis = ['Paystack','Flutterwave','Mono','Kuda','Termii','Stripe','Twilio','OpenWeatherMap'];
-const apis = [...new Set(pieces.flatMap(p => p.tags))].filter(t => knownApis.includes(t));
-const types = [...new Set(pieces.map(p => p.type))];
-
-const apiText = apis.length > 1
-  ? apis.slice(0,-1).join(', ') + ' and ' + apis[apis.length-1]
-  : apis[0] ?? 'multiple APIs';
-const typeText = types.length > 2
-  ? types.slice(0,-1).join(', ').toLowerCase() + ', and ' + types[types.length-1].toLowerCase()
-  : types.map(t => t.toLowerCase()).join(' and ');
-const workDesc = `${pieces.length} piece${pieces.length > 1 ? 's' : ''} covering ${apiText} — including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
-
+const { workHeading, workDesc } = getWorkSectionCopy(pieces);
 const marqueeItems = [
   'API Documentation','SDK Guides','Developer Experience',
   'Technical Writing','Paystack · Flutterwave · Mono','Stripe · Square · Airwallex',
