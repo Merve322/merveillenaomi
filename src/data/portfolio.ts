@@ -14,6 +14,16 @@ export interface PortfolioPiece {
 export const PORTFOLIO: PortfolioPiece[] = [
   // ── Add new pieces at the TOP so latest work shows first ──
   {
+    id: "adyen-checkout-api",
+    type: "API Reference & Integration Guide",
+    title: "Adyen Checkout API Documentation",
+    summary: 
+      "A complete API reference and integration guide for the Adyen Checkout API built with OpenAPI 3.0 and rendered with Redocly.",
+    intro: 
+      "Documents the full Drop-in integration flow for web including session creation, payment methods, card payment processing, and auth-capture flows. Authentication, error codes, and changelog included.",
+    tags: ["OpenAPI", "Redocly", "Payments API", "API Reference"],
+  },
+  {
     id: "paystack-where-developers-get-stuck",
     type: "Developer experience analysis",
     title: "Where Developers Get Stuck in Paystack's Payment Flow (And How to Fix It)",
@@ -45,6 +55,14 @@ export const PORTFOLIO: PortfolioPiece[] = [
   },
   // ── TO ADD A NEW PIECE ────────────────────────────────────
   // 1. Copy one object above (everything between { and })
+  id: "",
+    type: "",
+    title: "",
+    summary:
+      "",
+    intro:
+      "",
+    tags: [""],
   // 2. Paste it AT THE TOP of this array
   // 3. Fill in: id, type, title, summary, intro, tags
   // 4. Add a matching article component under src/components/articles/content
