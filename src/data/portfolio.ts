@@ -9,6 +9,7 @@ export interface PortfolioPiece {
   summary: string;
   intro: string;         // Shown on the article detail header
   tags: string[];
+  url?: string;
 }
 
 export const PORTFOLIO: PortfolioPiece[] = [
@@ -22,6 +23,7 @@ export const PORTFOLIO: PortfolioPiece[] = [
     intro: 
       "Documents the full Drop-in integration flow for web including session creation, payment methods, card payment processing, and auth-capture flows. Authentication, error codes, and changelog included.",
     tags: ["OpenAPI", "Redocly", "Payments API", "API Reference"],
+    url: "https://merve322.github.io/adyen-checkout-docs/",
   },
   {
     id: "paystack-where-developers-get-stuck",
@@ -55,14 +57,14 @@ export const PORTFOLIO: PortfolioPiece[] = [
   },
   // ── TO ADD A NEW PIECE ────────────────────────────────────
   // 1. Copy one object above (everything between { and })
-  id: "",
-    type: "",
-    title: "",
-    summary:
-      "",
-    intro:
-      "",
-    tags: [""],
+  // id: "",
+  //   type: "",
+  //   title: "",
+  //   summary:
+  //     "",
+  //   intro:
+  //     "",
+  //   tags: [""],
   // 2. Paste it AT THE TOP of this array
   // 3. Fill in: id, type, title, summary, intro, tags
   // 4. Add a matching article component under src/components/articles/content

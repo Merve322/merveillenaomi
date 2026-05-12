@@ -16,7 +16,18 @@ const { pieces } = Astro.props;
     <div class="hero-tag">SDK Guides</div>
     <div class="hero-tag">Developer Experience</div>
   </div>
-  <div class="hero-number" aria-hidden="true">{pieces.length}</div>
+  
+  <div class="hero-project-count">
+      <div class="hero-number" aria-hidden="true">{pieces.length}</div>
+      <small>projects</small>
+    </div>
+   <!-- <aside class="hero-project-index" aria-label={`${pieces.length} projects featured`}>
+    <div class="hero-project-label">Portfolio index</div>
+    <div class="hero-project-count">
+      <span>{String(pieces.length).padStart(2, '0')}</span>
+      <small>projects</small>
+    </div>
+  </aside> -->
   <div class="hero-content">
     <div class="hero-label">Technical Writing Portfolio</div>
     <h1 set:html={ME.tagline} />

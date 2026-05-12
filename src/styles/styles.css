@@ -244,9 +244,6 @@ nav {
 }
 
 .hero-number {
-  position: absolute;
-  bottom: 5rem;
-  right: 3rem;
   font-family: var(--font-serif);
   font-size: 10rem;
   font-weight: 300;
@@ -254,6 +251,51 @@ nav {
   line-height: 1;
   pointer-events: none;
   user-select: none;
+}
+
+/* .hero-project-index {
+  position: absolute;
+  right: 3rem;
+  bottom: 4.75rem;
+  width: 250px;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: color-mix(in srgb, var(--surface) 94%, white);
+  box-shadow: 0 14px 40px rgba(15, 31, 61, 0.1);
+  animation: fade-up 0.95s var(--ease-out-expo) 0.2s backwards;
+} */
+
+/* .hero-project-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.65rem;
+} */
+
+.hero-project-count {
+  position: absolute;
+  bottom: 5rem;
+  right: 3rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+/* .hero-project-count span {
+  font-family: var(--font-serif);
+  font-size: 2.3rem;
+  letter-spacing: -0.03em;
+  color: var(--text-muted);
+  line-height: 1;
+} */
+
+.hero-project-count small {
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-size: 9px;
+  color: var(--accent);
 }
 
 .hero-label {
