@@ -9,7 +9,7 @@ export interface PortfolioPiece {
   summary: string;
   intro: string;         // Shown on the article detail header
   tags: string[];
-  url?: string;
+  url?: string; // Optional external URL; if absent, piece links to internal article at /pieces/[id]
 }
 
 export const PORTFOLIO: PortfolioPiece[] = [
@@ -22,7 +22,7 @@ export const PORTFOLIO: PortfolioPiece[] = [
       "A complete API reference and integration guide for the Adyen Checkout API built with OpenAPI 3.0 and rendered with Redocly.",
     intro: 
       "Documents the full Drop-in integration flow for web including session creation, payment methods, card payment processing, and auth-capture flows. Authentication, error codes, and changelog included.",
-    tags: ["OpenAPI", "Redocly", "Payments API", "API Reference"],
+    tags: ["OpenAPI", "Redocly", "Adyen API", "API Reference"],
     url: "https://merve322.github.io/adyen-checkout-docs/",
   },
   {
@@ -113,7 +113,7 @@ export function getWorkSectionCopy(pieces: PortfolioPiece[]) {
       ? `${types.slice(0, -1).join(', ').toLowerCase()}, and ${types[types.length - 1].toLowerCase()}`
       : types.map(t => t.toLowerCase()).join(' and ');
 
-  const workDesc = `${pieces.length} piece${pieces.length > 1 ? 's' : ''} covering ${apiText} — including ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
+  const workDesc = `${pieces.length} piece${pieces.length > 1 ? 's' : ''} including: ${typeText}. Each demonstrates a different skill: how I audit existing docs, guide developers end to end, and analyse where integrations break down.`;
 
   return { workHeading, workDesc };
 }
